@@ -14,6 +14,15 @@ I will release the code when I find time to clean / comment my actual private re
 
 The server part is currently available.
 In short, the server lets you run an instance of the emulated game and expose the game's internal state and RGB image on an MQTT server.
-Then a client (based on MQTT) can interact with the game remotely. (The client is not yet released).
+Then a client (based on MQTT) can interact with the game remotely.
+
+The OpenAI Gym for Mario Kart 8 Deluxe is here.
 
 The code is provided as is, this version is not yet tested and may not work. When everything is complete, I'll explain how to configure the project step by step and how the project architecture actually works in details.
+
+# Remains
+
+* Test to make sure everything's working properly.
+* Make a script to create a package: necessary to greatly simplify integration with OpenAI Gym (Used by my RL agent too).
+* Write step-by-step documentation.
+* Write a brief on the overall architectural choice.
