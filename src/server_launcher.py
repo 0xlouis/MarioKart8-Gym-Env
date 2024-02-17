@@ -95,8 +95,9 @@ class ServerInstance:
         env['MQTT_HOST']    = self.mqtt_host
         env['MQTT_PORT']    = str(self.mqtt_port)
         env['SERVER_MODE']  = '0' if self.training else '1'
+        env['ENV_PATH']     = env['PWD']
         cmd = [
-            "../rsrc/zephyr-sdk-0.15.0/aarch64-zephyr-elf/bin/aarch64-zephyr-elf-gdb-py",
+            "../rsrc/aarch64-zephyr-elf/bin/aarch64-zephyr-elf-gdb-py",
             "--batch",
             "-x",
             "server.py"
@@ -108,7 +109,7 @@ class ServerInstance:
 
 if __name__ == "__main__":
     # Usage example
-    instance = ServerInstance(instance_id="00000000", mqtt_host="192.168.27.66", mqtt_port=1883)
+    instance = ServerInstance(instance_id="00000000", mqtt_host="127.0.0.1", mqtt_port=1883)
     # instance = ServerInstance(instance_id="01234567", mqtt_host="192.168.27.66", mqtt_port=1883, training=False)
 
     while True:

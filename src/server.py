@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(os.environ.copy()['ENV_PATH'])
+
 from platform_specific import Controller, Monitor
 import paho.mqtt.client as mqtt
 import numpy as np
@@ -9,7 +14,6 @@ import random
 import enum
 import time
 import gdb
-import os
 
 
 class SanityCheckException(Exception):
@@ -575,16 +579,16 @@ class GameEmulator(threading.Thread):
 
     def _yuzu_task(self):
         env = os.environ.copy()
-        env['LD_LIBRARY_PATH'] = "../docker/yuzu-linux-mainline/squashfs-root/usr/lib"
+        env['LD_LIBRARY_PATH'] = "../emulator/yuzu/usr/lib"
         cmd = [
-            "../docker/yuzu-linux-mainline/squashfs-root/AppRun", 
+            "../emulator/yuzu/AppRun", 
             "-g", 
             self.game_path
         ]
         self._proc_yuzu = subprocess.Popen(cmd, env=env)
 
     def _gdb_task(self):
-        cmd = ["../rsrc/zephyr-sdk-0.15.0/aarch64-zephyr-elf/bin/aarch64-zephyr-elf-gdb-py"]
+        cmd = ["../rsrc/aarch64-zephyr-elf/bin/aarch64-zephyr-elf-gdb-py"]
         self._proc_gdb = subprocess.Popen(cmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
         self._proc_gdb.communicate(input="target remote 127.0.0.1:6543\ncontinue\n".encode("utf8"))
 
@@ -672,7 +676,7 @@ class Manager:
 
     def __init__(self, instance_id="00000000", mqtt_host="192.168.27.66", mqtt_port=1883):
         self.server     = Server(server_callback=self._receive_order, instance_id=instance_id, mqtt_host=mqtt_host, mqtt_port=mqtt_port)
-        self.game       = GameEmulator(game_path="../game/Mario_Kart_8_Deluxe.xci")
+        self.game       = GameEmulator(game_path="../../../game/Mario_Kart_8_Deluxe.xci")
         self.game.launch()
         self.monitor    = Monitor()
         self.controller = Controller()
@@ -816,7 +820,7 @@ class Manager:
         self.server.mqtt.publish("Mario_Kart_8/"+self.server.instance_id+"/status/initializing_game", payload=struct.pack('B', True), qos=1, retain=True)
         self.debugger.set_mode(TimerWatchpoint.Mode.SAMPLER)
         self.mk8_helper.setup_race(self.game_setup)
-        self._sanity_check()
+        # self._sanity_check()
         self.server.mqtt.publish("Mario_Kart_8/"+self.server.instance_id+"/status/initializing_game", payload=struct.pack('B', False), qos=1, retain=True)
 
     def in_game(self):

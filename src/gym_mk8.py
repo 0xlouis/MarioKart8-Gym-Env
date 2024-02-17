@@ -256,19 +256,19 @@ if __name__=="__main__":
       env.game_setup['COURSE_CUP']        = random.randint(0, 11)
       env.game_setup['COURSE']            = random.randint(12, 15)
 
-    env = EnvMarioKart8(host="192.168.27.66", port=1883, target_instance="01234567", game_setup=game_setup, callback_reset_game_setup=callback_reset_game_setup, render_mode="human")
+    env = EnvMarioKart8(host="127.0.0.1", port=1883, target_instance="00000000", game_setup=game_setup, callback_reset_game_setup=callback_reset_game_setup, render_mode="human")
 
-    print("Init controller...")
-    controller = joystic.JoysticPS2("/dev/input/by-id/usb-0810_USB_Gamepad-event-joystick")
-    print("Init controller... OK")
+    # print("Init controller...")
+    # controller = joystic.JoysticPS2("/dev/input/by-id/usb-0810_USB_Gamepad-event-joystick")
+    # print("Init controller... OK")
 
     print("Reseting...")
     obs, nfo = env.reset()
     print("Reseting... OK")
 
-    def human_policy(obs):
-        action = {'action': controller.to_gym()}
-        return action
+    # def human_policy(obs):
+    #     action = {'action': controller.to_gym()}
+    #     return action
 
     def random_policy(obs):
         go_forward      = random.randint(0,1)
@@ -282,8 +282,8 @@ if __name__=="__main__":
         return action
 
     while True:
-        act = human_policy(obs) # The RL agent is an Human with this line.
-        # act = random_policy(obs) # The RL agent is an random with this line.
+        # act = human_policy(obs) # The RL agent is an Human with this line.
+        act = random_policy(obs) # The RL agent is an random with this line.
         # print(act)
         obs, rwd, end, nfo = env.step(act)
         # print(obs, rwd, end, nfo)
