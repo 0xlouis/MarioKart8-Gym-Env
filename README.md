@@ -1,5 +1,7 @@
 ![Banner of random agent policy](rsrc/img/banner.gif)
 
+[🇬🇧 English](./README.md) | [🇪🇸 Español](./README.es-ES.md)
+
 # MarioKart8-Gym-Env
 A MarioKart8 OpenAI Gym environment to make reinforcement learning projects feasible. This project is intended to be used for research purposes.
 
